@@ -35,6 +35,20 @@ export default function Dashboard() {
     getUser();
   }, []);
 
+  useEffect(() => {
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    console.log("USER =", user);
+
+    setUser(user);
+  };
+
+  getUser();
+}, []);
+
   // ======================
   // LOAD DATA (PROFILE + CHATS)
   // ======================
