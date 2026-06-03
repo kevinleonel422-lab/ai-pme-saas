@@ -15,6 +15,7 @@ type Chat = {
 };
 
 export default function Dashboard() {
+  console.log("Dashboard render");
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [chats, setChats] = useState<Chat[]>([]);
@@ -36,6 +37,22 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
+   const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    console.log("USER =", user);
+
+    setUser(user);
+  };
+
+  getUser();
+}, []);
+
+useEffect(() => {
+  console.log("Effect lancé");
+
   const getUser = async () => {
     const {
       data: { user },
