@@ -15,7 +15,6 @@ type Chat = {
 };
 
 export default function Dashboard() {
-  console.log("Dashboard render");
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [chats, setChats] = useState<Chat[]>([]);
@@ -25,34 +24,6 @@ export default function Dashboard() {
   // GET USER
   // ======================
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      setUser(user);
-    };
-
-    getUser();
-  }, []);
-
-  useEffect(() => {
-   const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    console.log("USER =", user);
-
-    setUser(user);
-  };
-
-  getUser();
-}, []);
-
-useEffect(() => {
-  console.log("Effect lancé");
-
   const getUser = async () => {
     const {
       data: { user },
@@ -61,10 +32,18 @@ useEffect(() => {
     console.log("USER =", user);
 
     setUser(user);
+
+    if (!user) {
+      setLoading(false);
+    }
   };
 
   getUser();
 }, []);
+
+useEffect(() => {
+  console.log("Current user:", user);
+}, [user]);
 
   // ======================
   // LOAD DATA (PROFILE + CHATS)
@@ -109,6 +88,14 @@ useEffect(() => {
   // ======================
   // LOADING UI
   // ======================
+  if (!loading && !user) {
+  return (
+    <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      Aucun utilisateur connecté
+    </div>
+  );
+}
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
