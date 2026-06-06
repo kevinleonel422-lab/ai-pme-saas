@@ -89,11 +89,8 @@ useEffect(() => {
   // LOADING UI
   // ======================
   if (!loading && !user) {
-  return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center">
-      Aucun utilisateur connecté
-    </div>
-  );
+  window.location.href = "/login";
+  return null;
 }
 
   if (loading) {
